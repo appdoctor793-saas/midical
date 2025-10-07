@@ -16,20 +16,44 @@ const SearchPatientPage = () => {
     }
 
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/fetch-patient-visits/`, {
-       
-        params: {
-          custom_patient_id: searchValue,
-          mobile: searchValue
-        },
+    let response = null;
+
+    // First try searching by custom_patient_id
+    try {
+      response = await axios.get(`http://127.0.0.1:8000/api/fetch-patient-visits/`, {
+        params: { custom_patient_id: searchValue },
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+    } catch (err) {
+      response = null; // no match
+    }
+
+    // If no results, try searching by mobile
+    if (!response || !response.data || response.data.length === 0) {
+      try {
+        response = await axios.get(`http://127.0.0.1:8000/api/fetch-patient-visits/`, {
+          params: { mobile: searchValue },
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+      } catch (err) {
+        response = null;
+      }
+    }
+
+    // Final check
+    if (response && response.data && response.data.length > 0) {
       setVisits(response.data);
       setError("");
-    } catch (error) {
-      console.error("Fetch error:", error);
+    } else {
+      setVisits([]);
+      setError("Patient not found.");
+    }
+  } catch (error) {
+    console.error("Search error:", error);
 
       if (error.response && error.response.status === 401) {
         alert("Session expired or unauthorized. Please log in again.");

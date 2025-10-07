@@ -76,8 +76,8 @@ const NewPatientVisit = () => {
         patientId: visit.custom_patient_id || "",
         examination: {
         UVA: {
-          OD: visit.examination.UVA.OD || "",
-          OS: visit.examination.UVA.OS || "",
+          OD: visit.examination?.UVA?.OD || "",
+          OS: visit.examination?.UVA?.OS || "",
         },
         BCVA: {
           OD: visit.examination?.BCVA?.OD || "",

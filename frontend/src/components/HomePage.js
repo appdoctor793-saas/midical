@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../api";
+import logo from "../assets/test.svg"; // ✅ Import logo
 
 export default function HomePage() {
   const [form, setForm] = useState({ username: "", password: "" });
@@ -28,8 +29,11 @@ export default function HomePage() {
 
   return (
     <div style={styles.container}>
+      {/* ✅ Logo */}
+      <img src={logo} alt="Clinic Logo" style={styles.logo} />      
       <h1 style={styles.title}>Chitra Eye Care</h1>
       <p style={styles.subtitle}>Please log in to continue</p>
+
       <form style={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
@@ -64,6 +68,10 @@ const styles = {
     padding: "3rem",
     backgroundColor: "#f9f9f9",
     height: "100vh",
+  },
+  logo: {
+    width: "300px",   // ✅ adjust size
+    marginBottom: "0 rem",
   },
   title: {
     fontSize: "2.5rem",
